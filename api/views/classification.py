@@ -11,13 +11,13 @@ import numpy as np
 
 img_height, img_width = 224, 224
 
-with open('././models/imagenet_classes.json', 'r') as f:
+with open('././models/custom_cnn_model.json', 'r') as f:
     labelInfo = f.read()
 
 labelInfo = json.loads(labelInfo)
 
 # Load the model without explicit graph and session
-model = load_model('././models/MobileNetModelImagenet.h5')
+model = load_model('././models/custom_cnn_model.h5')
 
 class ClassificationViewSet(ViewSet):
     def dispatch(self, request, *args, **kwargs):
@@ -40,9 +40,10 @@ class ClassificationViewSet(ViewSet):
 
         # Make predictions
         predi = model.predict(x)
-
+        print(predi)
+        print(str(np.argmax(predi[0])))
         predictedLabel = labelInfo[str(np.argmax(predi[0]))]
-        self.payload['classification'] = predictedLabel[1]
+        self.payload['classification'] = predictedLabel
         confidence = predi[0][np.argmax(predi[0])]
         self.payload['confidence'] = str(round(confidence * 100, 2)) + '%'
         return Response(self.payload, status=status.HTTP_200_OK)

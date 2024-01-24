@@ -140,3 +140,5 @@ ACCOUNT_USER_MODEL_USERNAME_FIELD = 'email'
 AUTHENTICATION_BACKENDS = [
    "accounts.backends.CustomModelBackend",
 ]
+
+ACCOUNT_EMAIL_VERIFICATION = 'none'
