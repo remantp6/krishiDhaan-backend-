@@ -56,6 +56,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'core.urls'
@@ -139,4 +141,9 @@ ACCOUNT_USER_MODEL_USERNAME_FIELD = 'email'
 
 AUTHENTICATION_BACKENDS = [
    "accounts.backends.CustomModelBackend",
+]
+
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",  # Add your frontend URL
 ]
