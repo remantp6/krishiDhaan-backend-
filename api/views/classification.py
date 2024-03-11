@@ -11,7 +11,7 @@ import numpy as np
 
 img_height, img_width = 224, 224
 
-with open('././models/diseases_classes.json', 'r') as f:
+with open('././models/custom_cnn_model.json', 'r') as f:
     labelInfo = f.read()
 
 labelInfo = json.loads(labelInfo)
@@ -40,7 +40,8 @@ class ClassificationViewSet(ViewSet):
 
         # Make predictions
         predi = model.predict(x)
-
+        print(predi)
+        print(str(np.argmax(predi[0])))
         predictedLabel = labelInfo[str(np.argmax(predi[0]))]
         self.payload['classification'] = predictedLabel
         confidence = predi[0][np.argmax(predi[0])]

@@ -143,6 +143,8 @@ AUTHENTICATION_BACKENDS = [
    "accounts.backends.CustomModelBackend",
 ]
 
+ACCOUNT_EMAIL_VERIFICATION = 'none'
+
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",  # Add your frontend URL
