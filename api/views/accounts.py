@@ -13,7 +13,7 @@ from django.core.mail import send_mail
 from django.conf import settings
 
 from api.serializers.accounts import (
-    UserSerializer, User3StepFormSerializer, UserActiveDeactiveSerializer
+    UserSerializer,
 )
 from allauth.socialaccount.models import SocialAccount
 
@@ -100,93 +100,6 @@ class UserProfileViewSet(ModelViewSet):
         serializer = self.get_serializer(queryset)
         self.payload['profile'] = serializer.data
         return Response(self.payload, status=status.HTTP_200_OK)
-
-    def patch(self, request, *args, **kwargs):
-        instance = self.get_queryset()
-        serializer = self.get_serializer(instance, data=request.data, partial=True)
-        serializer.is_valid(raise_exception=True)
-        self.perform_update(serializer)
-        self.payload['profile'] = serializer.data
-        return Response(self.payload, status=status.HTTP_200_OK)
-
-
-class User3stepFormViewset(ModelViewSet):
-    queryset = User.objects.all()
-    serializer_class = User3StepFormSerializer
-    permission_classes = (IsAuthenticated, )
-    http_method_names = ['patch']
-
-    def dispatch(self, request, *args, **kwargs):
-        self.payload = {
-            'profile': {},
-        }
-        return super().dispatch(request, *args, **kwargs)
-    
-    def get_queryset(self):
-        return self.queryset.filter(id=self.request.user.id).first()
-
-    def patch(self, request, *args, **kwargs):
-        data = request.data.copy()
-        data['is_signup'] = False
-        instance = self.get_queryset()
-        serializer = self.get_serializer(instance, data=data, partial=True)
-        serializer.is_valid(raise_exception=True)
-        self.perform_update(serializer)
-        self.payload['profile'] = serializer.data
-        if(serializer.data['first_name']):
-            name = "Name: " + serializer.data['first_name']  + " " + serializer.data['last_name'] + "\n"
-        else:
-            name = ""
-        # send email to email
-        try:
-            message_body = "New user registered with details: \n\n" + name + \
-                "Email: " + serializer.data['email'] + "\n" + \
-                "User Role: " + re.sub(r'[\[\]"\']', '', serializer.data['user_role']) or "" + "\n" + \
-                "Need To Make: " + re.sub(r'[\[\]"\']', '', serializer.data['need_to_make']) or "" + "\n" + \
-                "Heard About Us In: " + re.sub(r'[\[\]"\']', '', serializer.data['hear_about_us']) or "" + "\n" 
-            send_mail("New User Registered", message_body, settings.DEFAULT_FROM_EMAIL,  [settings.ADMIN_MAIL, 'bimalsubedi04@gmail.com'], fail_silently=True)
-        except Exception as e:
-            print(f'Error while sending mail: {e}')
-            pass
-        return Response(self.payload, status=status.HTTP_200_OK)
-
-
-class UsersListViewSet(ModelViewSet):
-    queryset = User.objects.filter(is_superuser=False, role__in=['U', 'B'])
-    serializer_class = UserSerializer
-    permission_classes = (IsAuthenticated, IsAdminUser, )
-    http_method_names = ['get']
-
-    def dispatch(self, request, *args, **kwargs):
-        self.payload = {
-            'profiles': {},
-        }
-        return super().dispatch(request, *args, **kwargs)
-    
-    def get_queryset(self):
-        return self.queryset.all()
-
-    def list(self, request, *args, **kwargs):
-        queryset = self.get_queryset()
-        serializer = self.get_serializer(queryset, many=True)
-        self.payload['users'] = serializer.data
-        return Response(self.payload, status=status.HTTP_200_OK)
-
-
-class UserActiveDeactiveViewSet(ModelViewSet):
-    queryset = User.objects.all()
-    serializer_class = UserActiveDeactiveSerializer
-    permission_classes = (IsAuthenticated, IsAdminUser, )
-    http_method_names = ['patch']
-
-    def dispatch(self, request, *args, **kwargs):
-        self.payload = {
-            'profile': {},
-        }
-        return super().dispatch(request, *args, **kwargs)
-    
-    def get_queryset(self):
-        return self.queryset.filter(id=self.request.GET.get('user_id', 0)).first()
 
     def patch(self, request, *args, **kwargs):
         instance = self.get_queryset()

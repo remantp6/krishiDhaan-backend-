@@ -1,8 +1,9 @@
 from rest_framework.routers import DefaultRouter
 
 from api.views.accounts import (
-    SentOtpViewSet , UserLoginSignUpViewSet, UserProfileViewSet, User3stepFormViewset,
-    UsersListViewSet, UserActiveDeactiveViewSet
+    SentOtpViewSet , UserLoginSignUpViewSet, UserProfileViewSet, 
+    # User3stepFormViewset,
+    # UsersListViewSet, UserActiveDeactiveViewSet
 )
 
 router_accounts = DefaultRouter()

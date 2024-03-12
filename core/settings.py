@@ -86,9 +86,9 @@ DATABASES = {
         'ENGINE': env('DB_ENGINE'),
         'USER': env('DB_USER'),
         'PASSWORD': env('DB_PASSWORD'),
-        'OPTIONS': {
-          'autocommit': True,
-        },
+        # 'OPTIONS': {
+        #   'autocommit': True,
+        # },
     }
 }
 
