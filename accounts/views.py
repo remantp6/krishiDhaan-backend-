@@ -13,5 +13,11 @@ class CustomRegisterView(RegisterView):
         serializer = self.get_serializer(data=mutable_data)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
+        serializer_data = serializer.data
+        serializer_data.pop('username')
         headers = self.get_success_headers(serializer.data)
-        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+        response_data = {
+            "message": "User registered successfully!",
+            "data": serializer_data
+        }
+        return Response(response_data, status=status.HTTP_201_CREATED, headers=headers)
