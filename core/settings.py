@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-8*jb+tsi@1a$uy$jw)v+0*8@ljg$t+@dn4d09+!n_xwq9g*or-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -56,7 +56,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'allauth.account.middleware.AccountMiddleware',
+    # 'allauth.account.middleware.AccountMiddleware',
+    # 'allauth.account.middleware.AuthenticationMiddleware',
     'corsheaders.middleware.CorsMiddleware',
 ]
 
@@ -132,6 +133,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
@@ -154,3 +156,6 @@ ACCOUNT_EMAIL_VERIFICATION = 'none'
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",  # Add your frontend URL
 ]
+
+MEDIA = BASE_DIR / 'media'
+MEDIA_URL = '/media/'

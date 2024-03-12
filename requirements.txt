@@ -4,5 +4,5 @@ django-allauth==0.50.0
 django-cors-headers==4.0.0
 djangorestframework_simplejwt==5.2.2
 tensorflow==2.15.0
-keras==3.0.4
+keras
 pillow==10.2.0
