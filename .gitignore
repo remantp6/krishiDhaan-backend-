@@ -8,3 +8,4 @@ staticfiles/
 tmp/
 public/
 .htaccess
+.env
