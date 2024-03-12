@@ -5,3 +5,6 @@ migrations/
 .DS_Store
 stderr.log
 staticfiles/
+tmp/
+public/
+.htaccess
