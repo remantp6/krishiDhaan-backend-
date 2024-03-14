@@ -1,13 +1,3 @@
-# from django.core.mail import send_mail
-
-# def send_otp(email, otp):
-#     send_mail(
-#         'OTP Verification',
-#         f'Your OTP is {otp}',
-#         settings.DEFAULT_FROM_EMAIL,
-#         [email],
-#         fail_silently=False,
-#     )
 import platform
 
 from django.conf import settings

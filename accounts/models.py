@@ -63,3 +63,12 @@ class User(AbstractBaseUser, PermissionsMixin):
     # def get_name(self):
     #     return f'{self.first_name} {self.last_name}'
 
+
+class UserHistory(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='images/')
+    date = models.DateTimeField(auto_now_add=True)
+    classification = models.CharField(max_length=50)
+    confidence = models.CharField(max_length=10)
+    description = models.TextField()
+    solution = models.TextField()
