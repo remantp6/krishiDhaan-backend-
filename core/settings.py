@@ -80,17 +80,25 @@ WSGI_APPLICATION = 'core.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'NAME': env('DB_NAME'),
-        'ENGINE': env('DB_ENGINE'),
-        'USER': env('DB_USER'),
-        'PASSWORD': env('DB_PASSWORD'),
-        # 'OPTIONS': {
-        #   'autocommit': True,
-        # },
+if env('DEBUG'):
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'NAME': env('DB_NAME'),
+            'ENGINE': env('DB_ENGINE'),
+            'USER': env('DB_USER'),
+            'PASSWORD': env('DB_PASSWORD'),
+            'OPTIONS': {
+            'autocommit': True,
+            },
+        }
+    }
 
 
 # Password validation
