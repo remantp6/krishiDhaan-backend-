@@ -97,7 +97,7 @@ class ClassificationViewSet(ViewSet):
             user=request.user,
             image=image_file,
             classification=predictedLabel,
-            confidence=confidence,
+            confidence=str(round(confidence * 100, 2)) + '%',
             description=disease_data[predictedLabel]['description'],
             solution=disease_data[predictedLabel]['solution']
         )
