@@ -58,4 +58,8 @@ class UserHistoryViewSet(ModelViewSet):
         queryset = self.get_queryset()
         serializer = self.get_serializer(queryset, many=True)
         self.payload['history'] = serializer.data
+        # get solution and split into array
+        for history in self.payload['history']:
+            history['solution'] = history['solution'].split('.')
+            history['solution'] = list(filter(lambda x: x != '', history['solution']))
         return Response(self.payload, status=status.HTTP_200_OK)

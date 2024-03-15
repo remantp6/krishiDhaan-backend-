@@ -90,7 +90,11 @@ class ClassificationViewSet(ViewSet):
         confidence = predi[0][np.argmax(predi[0])]
         self.payload['confidence'] = str(round(confidence * 100, 2)) + '%'
         self.payload['description'] = disease_data[predictedLabel]['description']
-        self.payload['solution'] = disease_data[predictedLabel]['solution']
+        # split solution into array of sentences
+        solutions = disease_data[predictedLabel]['solution'].split('.')
+        # remove empty strings from the array
+        solutions = list(filter(lambda x: x != '', solutions))
+        self.payload['solution'] = solutions
 
         # save the result to UserHistory model
         UserHistory.objects.create(
