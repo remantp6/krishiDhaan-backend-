@@ -72,3 +72,11 @@ class UserHistory(models.Model):
     confidence = models.CharField(max_length=10)
     description = models.TextField()
     solution = models.TextField()
+
+
+class ContactUs(models.Model):
+    name = models.CharField(max_length=50)
+    phone = models.CharField(max_length=15)
+    email = models.EmailField(max_length=60)
+    message = models.TextField()
+    date = models.DateTimeField(auto_now_add=True)

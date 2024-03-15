@@ -1,4 +1,4 @@
-from accounts.models import User, UserHistory
+from accounts.models import User, UserHistory, ContactUs
 
 from rest_framework.serializers import (
     ModelSerializer,
@@ -40,4 +40,12 @@ class UserHistorySerializer(ModelSerializer):
         model = UserHistory
         fields = [
             'user', 'image', 'date', 'classification', 'confidence', 'description', 'solution',
+        ]
+
+
+class ContactUsSerializer(ModelSerializer):
+    class Meta:
+        model = ContactUs
+        fields = [
+            'name', 'phone', 'email', 'message', 'date'
         ]
