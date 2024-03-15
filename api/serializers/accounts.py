@@ -27,6 +27,12 @@ class CustomRegisterSerializer(RegisterSerializer):
     password1 = serializers.CharField(write_only=True, required=True)
     password2 = serializers.CharField(write_only=True)
     email = serializers.EmailField(required=True)
+    
+    def save(self, request):
+        user = super(CustomRegisterSerializer, self).save(request)
+        user.full_name = self.validated_data.get('full_name', '')
+        user.save()
+        return user
 
 
 class UserHistorySerializer(ModelSerializer):
