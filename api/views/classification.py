@@ -73,9 +73,20 @@ class ClassificationViewSet(ViewSet):
 
         image_file = request.FILES['image']
 
+        # check if the file is an image
+        print(image_file.content_type)
+        if not image_file.content_type.startswith('image'):
+            return Response({'error': 'Invalid file format.'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        # check if the size is less than 10MB
+        print(image_file.size)
+        if image_file.size > 10 * 1024 * 1024:
+            return Response({'error': 'Image size exceed the limit. Please upload image smaller than 10MB.'}, status=status.HTTP_400_BAD_REQUEST)
+
         # Create a BytesIO object and load the image
         image_data = io.BytesIO(image_file.read())
         img = Image.open(image_data)
+        img = img.convert('RGB')
         img = img.resize((img_height, img_width))
         x = image.img_to_array(img)
         x = x / 255.0
