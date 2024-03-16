@@ -6,7 +6,7 @@ from django.conf.urls.static import static
 from accounts.views import CustomRegisterView
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    # path('admin/', admin.site.urls),
 ]
 
 urlpatterns += [
