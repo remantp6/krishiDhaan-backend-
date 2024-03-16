@@ -7,6 +7,7 @@ from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from keras.models import load_model
 from keras.preprocessing import image
+# from keras.applications.vgg16 import preprocess_input
 import json
 import tensorflow as tf
 import numpy as np
@@ -51,13 +52,13 @@ disease_data = {
 
 img_height, img_width = 224, 224
 
-with open('././models/custom_cnn_model.json', 'r') as f:
+with open('././models/diseases_classes.json', 'r') as f:
     labelInfo = f.read()
 
 labelInfo = json.loads(labelInfo)
 
 # Load the model without explicit graph and session
-model = load_model('././models/custom_cnn_model.h5')
+model = load_model('././models/vgg16_model_iter_1.h5')
 
 
 class ClassificationViewSet(ViewSet):
@@ -74,19 +75,22 @@ class ClassificationViewSet(ViewSet):
         image_file = request.FILES['image']
 
         # check if the file is an image
-        print(image_file.content_type)
+        # print(image_file.content_type)
         if not image_file.content_type.startswith('image'):
             return Response({'error': 'Invalid file format.'}, status=status.HTTP_400_BAD_REQUEST)
         
         # check if the size is less than 10MB
-        print(image_file.size)
+        # print(image_file.size)
         if image_file.size > 10 * 1024 * 1024:
             return Response({'error': 'Image size exceed the limit. Please upload image smaller than 10MB.'}, status=status.HTTP_400_BAD_REQUEST)
 
         # Create a BytesIO object and load the image
         image_data = io.BytesIO(image_file.read())
         img = Image.open(image_data)
-        img = img.convert('RGB')
+        # if the image is not in RGB mode, convert it
+        # print(img.mode)
+        if img.mode != 'RGB':
+            img = img.convert('RGB')
         img = img.resize((img_height, img_width))
         x = image.img_to_array(img)
         x = x / 255.0
